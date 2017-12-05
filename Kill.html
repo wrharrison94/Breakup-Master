@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="test.css">
+	<link href="https://fonts.googleapis.com/css?family=VT323" rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="linktest.js"></script>
+	<title>test</title>
+</head>
+<body>
+<h1>
+  <p class="typewrite" data-period="2000" data-type='[ "You grab hold of a shin bone and pull it free.<br> Then, you work with the bone for a moment to peel off any remaining bits of flesh.<br> This will make an exclent kn— <br>...Sword? <br>...Pike? <br><br> Whatever.... <br> It’s going to ruin somebody’s day.","You insert the bone between two of the iron bars, then pull with all your might.<br> It snaps violently, leaving you holding a jagged, two-foot-long danger stick.","After a few hours’ sharpening against the stone wall, your deadly instrument feels properly in-tune.<br><br>You conceal the weapon and lie in wait for a guard.","When a red-cape finally approaches your cell to deliver a bucket of slop, your pulse quickens.<br> Your right hand tightens around the weapon.<br><br>The guard fumbles with a number of different keys before one eventually clicks into the lock.<br><span>SHOWTIME.</span>","“Help!” You call out suddenly from the darkness.<br>The guard stops and peers into your cell.<br> That’s when you reach through the bars, grab the back of his neck, and pull him in close.<br> With his breath on your face, you plunge your weapon into his chest.<br> Then you rip it out, and send it, over and over again, into the guard’s stomach.<br> He falls dead on the floor.","Reaching through the bars, you turn the key, and swing the door open.","<img src=enter.png>. Press Enter to continue......"]'>
+  </p>
+</h1>
+
+<a href="DungeonLoose.html" id="linkenter"></a>
+
+<script type="text/javascript">
+	var TxtType = function(el, toRotate, period) {
+        this.toRotate = toRotate;
+        this.el = el;
+        this.loopNum = 0;
+        this.period = parseInt(period, 8) || 200;
+        this.txt = '';
+        this.tick();
+        this.isDeleting = false;
+    };
+
+    TxtType.prototype.tick = function() {
+        var i = this.loopNum % this.toRotate.length;
+        var fullTxt = this.toRotate[i];
+
+        if (this.isDeleting) {
+        this.txt = fullTxt.substring(0, this.txt.length - 2.5);
+        } else {
+        this.txt = fullTxt.substring(0, this.txt.length + 1);
+        }
+
+        this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+        var that = this;
+        var delta = 122 - Math.random() * 110;
+
+        if (this.isDeleting) { delta /= 2; }
+
+        if (!this.isDeleting && this.txt === fullTxt) {
+        delta = this.period;
+        this.isDeleting = true;
+        } else if (this.isDeleting && this.txt === '') {
+        this.isDeleting = false;
+        this.loopNum++;
+        delta = 900;
+        }
+
+        setTimeout(function() {
+        that.tick();
+        }, delta);
+    };
+
+    window.onload = function() {
+        var elements = document.getElementsByClassName('typewrite');
+        for (var i=0; i<elements.length; i++) {
+            var toRotate = elements[i].getAttribute('data-type');
+            var period = elements[i].getAttribute('data-period');
+            if (toRotate) {
+              new TxtType(elements[i], JSON.parse(toRotate), period);
+            }
+        }
+        // INJECT CSS
+        var css = document.createElement("style");
+        css.type = "text/css";
+        css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
+        document.body.appendChild(css);
+    };
+</script>
+</body>
+</html>

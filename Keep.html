@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="test.css">
+	<link href="https://fonts.googleapis.com/css?family=VT323" rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="linktest.js"></script>
+	<title>Breakup Master</title>
+</head>
+<body>
+<h1>
+  <p class="typewrite" data-period="2000" data-type='[ "After two days on-foot, you near Trogdor’s keep.<br> Even before you set eyes on the fiery beast, you can smell sulpher on the wind.<br><br>You climb an earthen berm to scout out the area, crawling to its edge once you reach the top.<br><br> The keep stands 100 feet tall, surrounded by a over-sized moat and a well-constructed palisade.<br> What‘s more, a massive dragon lies curled around the tower‘s base.<br><br> The dragon, however, appears to be sound asleep.","Two options occur to you:<br><br><img src=key1.png>. You could attempt to sneak past the sleeping dragon.<br><br>OR<br><br><img src=key2.png>.You could attempt to slay the beast while he sleeps.","Type 1 or 2 to continue....."]'>
+  </p>
+</h1>
+
+<a href="Sneak.html" id="link1"></a>
+<a href="Slay.html" id="link2"></a>
+
+<script type="text/javascript">
+	var TxtType = function(el, toRotate, period) {
+        this.toRotate = toRotate;
+        this.el = el;
+        this.loopNum = 0;
+        this.period = parseInt(period, 8) || 200;
+        this.txt = '';
+        this.tick();
+        this.isDeleting = false;
+    };
+
+    TxtType.prototype.tick = function() {
+        var i = this.loopNum % this.toRotate.length;
+        var fullTxt = this.toRotate[i];
+
+        if (this.isDeleting) {
+        this.txt = fullTxt.substring(0, this.txt.length - 2.5);
+        } else {
+        this.txt = fullTxt.substring(0, this.txt.length + 1);
+        }
+
+        this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+        var that = this;
+        var delta = 122 - Math.random() * 110;
+
+        if (this.isDeleting) { delta /= 2; }
+
+        if (!this.isDeleting && this.txt === fullTxt) {
+        delta = this.period;
+        this.isDeleting = true;
+        } else if (this.isDeleting && this.txt === '') {
+        this.isDeleting = false;
+        this.loopNum++;
+        delta = 900;
+        }
+
+        setTimeout(function() {
+        that.tick();
+        }, delta);
+    };
+
+    window.onload = function() {
+        var elements = document.getElementsByClassName('typewrite');
+        for (var i=0; i<elements.length; i++) {
+            var toRotate = elements[i].getAttribute('data-type');
+            var period = elements[i].getAttribute('data-period');
+            if (toRotate) {
+              new TxtType(elements[i], JSON.parse(toRotate), period);
+            }
+        }
+        // INJECT CSS
+        var css = document.createElement("style");
+        css.type = "text/css";
+        css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
+        document.body.appendChild(css);
+    };
+</script>
+</body>
+</html>

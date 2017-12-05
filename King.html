@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="test.css">
+	<link href="https://fonts.googleapis.com/css?family=VT323" rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="linktest.js"></script>
+	<title>Breakup Master</title>
+</head>
+<body>
+<h1>
+    <p class="typewrite" data-period="2000" data-type='[ "The guards drag you through a large banquet hall adorned with scarlet banners and animal furs.<br> At the front of the room, they throw you to the floor before a great throne.<br><br> Rising to your knees, you find yourself gazing upon the boots of Richard Pencock, Protector of the Realm, Lord of the Brooding Straight, and Massive Fucking Prick.","“You again?” Pencock says.<br><br>One of the guards steps forward. “He’s broken free of the dungeon, my liege.”<br><br>The king looks to his court. “And what shall we do with him?”<br><br>“Off with his head!”<br><br>“Flay him!”<br><br>“Dragon’s fire!”","Pencock holds up a hand and the crowd falls silent.<br><br>“Dragon’s fire?” He says, “Interesting. I trust you will remember your darling Layla?”<br><br>“What have you done with her, you miserable bastard?”<br><br>The king scoffs. “You act as though she’s innocent in all of this...<br>Layla’s still in one piece. Which is more than I can say for her maidenhead, you vile rake.”<br><br>“We loved each other!”<br><br>“Ah, yes,‘Love’,” says Pencock.<b> “I prefer loyalty.”<br> “But loyalty is a fickle thing without fear to inspire it.”","“Recently, though, I’ve had my own trouble with disloyalty.”<br>“You see, I’ve locked your darling Layla in a keep to ensure her continued chastity.<br> Unfortunately, the dragon called Trogdor who guards it has become... somewhat unmanageable.”<br> “If you will go to the keep and return Layla to me, I will spare your life and give you riches surpassing your wildest dreams.”<br><br>“And if refuse?”<br><br>“You will die a coward. Right where you kneel.”<br><br><br>What will you do?<br><br><img src=key1.png>. Accept Pencock‘s quest<br><br><img src=key2.png>. “I‘d rather die, thanks.”","Type 1 or 2 to continue..... "]'>
+    </p>
+</h1>
+
+<a href="Accept.html" id="link1"></a>
+<a href="Restart.html" id="link2"></a>
+
+<script type="text/javascript">
+	var TxtType = function(el, toRotate, period) {
+        this.toRotate = toRotate;
+        this.el = el;
+        this.loopNum = 0;
+        this.period = parseInt(period, 8) || 200;
+        this.txt = '';
+        this.tick();
+        this.isDeleting = false;
+    };
+
+    TxtType.prototype.tick = function() {
+        var i = this.loopNum % this.toRotate.length;
+        var fullTxt = this.toRotate[i];
+
+        if (this.isDeleting) {
+        this.txt = fullTxt.substring(0, this.txt.length - 2.5);
+        } else {
+        this.txt = fullTxt.substring(0, this.txt.length + 1);
+        }
+
+        this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+        var that = this;
+        var delta = 122 - Math.random() * 110;
+
+        if (this.isDeleting) { delta /= 2; }
+
+        if (!this.isDeleting && this.txt === fullTxt) {
+        delta = this.period;
+        this.isDeleting = true;
+        } else if (this.isDeleting && this.txt === '') {
+        this.isDeleting = false;
+        this.loopNum++;
+        delta = 900;
+        }
+
+        setTimeout(function() {
+        that.tick();
+        }, delta);
+    };
+
+    window.onload = function() {
+        var elements = document.getElementsByClassName('typewrite');
+        for (var i=0; i<elements.length; i++) {
+            var toRotate = elements[i].getAttribute('data-type');
+            var period = elements[i].getAttribute('data-period');
+            if (toRotate) {
+              new TxtType(elements[i], JSON.parse(toRotate), period);
+            }
+        }
+        // INJECT CSS
+        var css = document.createElement("style");
+        css.type = "text/css";
+        css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
+        document.body.appendChild(css);
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+#startbody{
+	background-color: black;
+	padding-right: auto;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+#startbody p{
+	font-family: VT323;
+	color: #00FF00; text-decoration: none;
+	font-weight: lighter;
+	text-align: center;
+}
+#start{
+	background-image: url("BM Start.gif");
+	background-repeat: no-repeat;
+	background-size: contain;
+	width: 100%;
+	height: 650px;
+	margin: 0px;
+	background-color: black;
+
+}
+
+#restart{
+	background-image: url("wasted.gif");
+	background-repeat: no-repeat;
+	background-size: contain;
+	width: 100%;
+	height: 650px;
+	margin: 0px;
+	background-color: black;
+
+}
+
+#theend{
+	background-image: url("theend.gif");
+	background-repeat: no-repeat;
+	background-size: contain;
+	width: 100%;
+	height: 650px;
+	margin: 0px;
+	background-color: black;
+
+}
+
+#gmaebody{
+	background-color: black;
+}
+
+#restart: hover {
+	text-decoration: none;
+}
+
+*: hover { text-decoration: none!important;
+
+}

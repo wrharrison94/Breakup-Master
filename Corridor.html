@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="test.css">
+    <link href="https://fonts.googleapis.com/css?family=VT323" rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="linktest.js"></script>
+    <title>test</title>
+</head>
+<body>
+<h1>
+  <p class="typewrite" data-period="2000" data-type='[ "Shirtless, you step into the empty corridor.<br> Clearly, there is no point in trying to blend... and looking down at your muddy, bloody, bare footprints on the polished stone floor, you decide there’s no point in hiding either.","At one end of the long hallway, you can see sunlight.<br> You begin sprinting towards it.","Suddenly, you hear men shouting from behind:<br>“Stop! Seize him! He’s loose from the dungeon!”","You run faster.","Just as you near the corridor’s end, a portly guard rounds the corner and draws his sword.<br><br> The others are in hot pursuit.","You keep running.<br><br> By this point, you can actually see an open window behind the chubby guard.<br><br>“Halt or die!” he yells, preparing to swing his weapon.<br><br><img src=key1.png>. Do you attempt to charge past him?<br><img src=key2.png>. Do you make a stand and fight the guards?<br><img src=key3.png>. Or do you surrender?<br><br>Type 1,2, or 3 to continue....."]'>
+  </p>
+</h1>
+
+<a href="Charge.html" id="link1"></a>
+<a href="Restart.html" id="link2"></a>
+<a href="Surrender.html" id="link3"></a>
+
+<script type="text/javascript">
+    var TxtType = function(el, toRotate, period) {
+        this.toRotate = toRotate;
+        this.el = el;
+        this.loopNum = 0;
+        this.period = parseInt(period, 8) || 200;
+        this.txt = '';
+        this.tick();
+        this.isDeleting = false;
+    };
+
+    TxtType.prototype.tick = function() {
+        var i = this.loopNum % this.toRotate.length;
+        var fullTxt = this.toRotate[i];
+
+        if (this.isDeleting) {
+        this.txt = fullTxt.substring(0, this.txt.length - 2.5);
+        } else {
+        this.txt = fullTxt.substring(0, this.txt.length + 1);
+        }
+
+        this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+        var that = this;
+        var delta = 122 - Math.random() * 110;
+
+        if (this.isDeleting) { delta /= 2; }
+
+        if (!this.isDeleting && this.txt === fullTxt) {
+        delta = this.period;
+        this.isDeleting = true;
+        } else if (this.isDeleting && this.txt === '') {
+        this.isDeleting = false;
+        this.loopNum++;
+        delta = 900;
+        }
+
+        setTimeout(function() {
+        that.tick();
+        }, delta);
+    };
+
+    window.onload = function() {
+        var elements = document.getElementsByClassName('typewrite');
+        for (var i=0; i<elements.length; i++) {
+            var toRotate = elements[i].getAttribute('data-type');
+            var period = elements[i].getAttribute('data-period');
+            if (toRotate) {
+              new TxtType(elements[i], JSON.parse(toRotate), period);
+            }
+        }
+        // INJECT CSS
+        var css = document.createElement("style");
+        css.type = "text/css";
+        css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
+        document.body.appendChild(css);
+    };
+</script>
+</body>
+</html>

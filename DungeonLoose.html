@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="test.css">
+	<link href="https://fonts.googleapis.com/css?family=VT323" rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="linktest.js"></script>
+	<title>test</title>
+</head>
+<body>
+<h1>
+  <p class="typewrite" data-period="2000" data-type='[ "Once loose in the dungeon, you find an unlocked door leading out to the castle’s main corridor.<br><br> It seems to be the only way out.","You crack open the door.<br><br> Just as you peak into the corridor, a sentry walks past.<br> Instantly, you shut the door and throw your body’s weight against it.","A moment passes as your heart pumps furiously, but nothing happens.","You’re certain he must’ve seen you, but the guard’s footsteps continue down the corridor.<br><br>... He’s likely been on patrol for a while now.","The guard’s footsteps eventually fade out of earshot.<br><br>This could be your chance.<br><br><img src=key1.png>. Do you make a break for it now?<br><br> <img src=key2.png>. Or do you wait for a better opportunity to present itself? <br><br> Type 1 or 2 to continue.....<br><br><br>"]'>
+  </p>
+</h1>
+
+<a href="Corridor.html" id="link1"></a>
+<a href="Wait.html" id="link2"></a>
+
+<script type="text/javascript">
+	var TxtType = function(el, toRotate, period) {
+        this.toRotate = toRotate;
+        this.el = el;
+        this.loopNum = 0;
+        this.period = parseInt(period, 8) || 200;
+        this.txt = '';
+        this.tick();
+        this.isDeleting = false;
+    };
+
+    TxtType.prototype.tick = function() {
+        var i = this.loopNum % this.toRotate.length;
+        var fullTxt = this.toRotate[i];
+
+        if (this.isDeleting) {
+        this.txt = fullTxt.substring(0, this.txt.length - 2.5);
+        } else {
+        this.txt = fullTxt.substring(0, this.txt.length + 1);
+        }
+
+        this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+        var that = this;
+        var delta = 122 - Math.random() * 110;
+
+        if (this.isDeleting) { delta /= 2; }
+
+        if (!this.isDeleting && this.txt === fullTxt) {
+        delta = this.period;
+        this.isDeleting = true;
+        } else if (this.isDeleting && this.txt === '') {
+        this.isDeleting = false;
+        this.loopNum++;
+        delta = 900;
+        }
+
+        setTimeout(function() {
+        that.tick();
+        }, delta);
+    };
+
+    window.onload = function() {
+        var elements = document.getElementsByClassName('typewrite');
+        for (var i=0; i<elements.length; i++) {
+            var toRotate = elements[i].getAttribute('data-type');
+            var period = elements[i].getAttribute('data-period');
+            if (toRotate) {
+              new TxtType(elements[i], JSON.parse(toRotate), period);
+            }
+        }
+        // INJECT CSS
+        var css = document.createElement("style");
+        css.type = "text/css";
+        css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
+        document.body.appendChild(css);
+    };
+</script>
+</body>
+</html>
